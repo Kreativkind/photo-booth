@@ -53,7 +53,7 @@ camera.initialize(function( res, msg, err) {
   let liveConfig = utils.getConfig().live;
   if(liveConfig){
     livePreview = new LivePreview(camera.camera, document.getElementById('live'), liveConfig.framerate);
-    livePreview.start()
+    // livePreview.start()
   }
 });
 
@@ -111,7 +111,10 @@ function trigger() {
   executing = true;
 
   slideshow.stop();
-
+  if(livePreview) {
+    livePreview.start()
+    $(".live").removeClass("hidden");
+  }
   if (camera.isInitialized()) {
 
     const triggerPhotoOffsetBeforeZero = 0.5; // in seconds
@@ -135,8 +138,13 @@ function trigger() {
     setTimeout(function() {
       if(livePreview)
         livePreview.stop();
+        $(".live").addClass("hidden");
+      $("#flash").addClass("flash");
+      setTimeout(function() {
+        $("#flash").removeClass("flash");
+      }, 750);
       camera.takePicture(function(res, msg1, msg2) {
-
+        $("#flash").removeClass("flash");
         const message1 = msg1;
         const message2 = msg2;
 
@@ -164,7 +172,7 @@ function trigger() {
               webApp.sendNewPhoto(message2);  // send image to connected web clients
 
               if(livePreview)
-                livePreview.start()
+                // livePreview.start()
               slideshow.start();
 
             } else {

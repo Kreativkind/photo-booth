@@ -1,20 +1,20 @@
-/* 
- * This file is part of "photo-booth" 
+/*
+ * This file is part of "photo-booth"
  * Copyright (c) 2018 Philipp Trenz
  *
  * For more information on the project go to
  * <https://github.com/philipptrenz/photo-booth>
- * 
- * This program is free software: you can redistribute it and/or modify  
- * it under the terms of the GNU General Public License as published by  
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, version 3.
  *
- * This program is distributed in the hope that it will be useful, but 
- * WITHOUT ANY WARRANTY; without even the implied warranty of 
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU 
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License 
+ * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -48,7 +48,7 @@ class Utils {
   }
 
   getConfig(force = false) {
-    if (!this.config || force) {   
+    if (!this.config || force) {
       this.config = require(this.config_path);
       return this.config;
     }
@@ -88,7 +88,7 @@ class Utils {
       if ( newContentDir !== null && typeof newContentDir === 'string' && newContentDir.length > 0) {  // if valid path in config
         try {
           if (!fs.existsSync(String(newContentDir))) fs.mkdirSync(String(newContentDir));
-          this.contentDir = (newContentDir.startsWith('/')) ? newContentDir : path.join(__dirname, '../', newContentDir ); 
+          this.contentDir = (newContentDir.startsWith('/')) ? newContentDir : path.join(__dirname, '../', newContentDir );
         } catch (err) {
           // fallback: default
           console.error('Could not open or create content_dir \''+this.config.content_dir+'\' like defined in config.json. '+err+'\nInstead going to use default \'',this.defaultContentDirectory,'\'');
@@ -148,7 +148,7 @@ class Utils {
         for (var i = 0; i < numberImages; i++) {
           //console.log(photos_dir+"/"+files[i]);
           // just take jpegs
-          if ( files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG") ){  
+          if ( files[i].endsWith(".jpg") || files[i].endsWith(".jpeg") || files[i].endsWith(".JPG") || files[i].endsWith(".JPEG") ){
             self.prependImage(self.getPhotosDirectory()+"/"+files[i]);
           }
         }
@@ -176,13 +176,17 @@ class Utils {
           $('#front').html("Not yet implemented");
         }
       }
-      
+
 
       var position = this.config.branding.position
       if (position) {
         if (position == 'center') {
           $('#front').css('align-items','center');
           $('#front').css('justify-content','center');
+        } else if (position == 'bottomcenter') {
+          $('#front').css('align-items', 'flex-end');
+          $('#front').css('justify-content', 'center');
+          $('#front').css('text-align', 'center');
         } else if (position == 'topleft') {
           $('#front').css('align-items','flex-start');
           $('#front').css('justify-content','flex-start');
@@ -286,5 +290,5 @@ class Utils {
 /*
  * Module exports for connection
  */
- let utils = new Utils() 
+ let utils = new Utils()
 export { utils as default };
